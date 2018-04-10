@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<SCRIPT language="JavaScript">
+	var speed=80; //设置滚动速度
+	demo2.innerHTML=demo1.innerHTML //复制dome1为dome2
+	function Marquee(){
+	if(demo2.offsetTop-demo.scrollTop<=0) //当滚动至dome1与dome2交界时
+	demo.scrollTop-=demo1.offsetHeight //dome跳到最顶端
+	else{
+	demo.scrollTop++
+	}
+	}
+	var MyMar=setInterval(Marquee,speed) //设置定时器
+	demo.onmouseover=function() {clearInterval(MyMar)}//鼠标移上时清除定时器达到滚动停止的目的
+	demo.onmouseout=function() {MyMar=setInterval(Marquee,speed)}//鼠标移开时重设定时器，继续滚动
+</SCRIPT> 
+</head>
+
+<body >
+<table align=center cellpadding=0 cellspace=0 border=0>
+<tr>
+<td height="186" valign="top"><marquee behavior='scroll' scrollamount="2" loop="-1" direction="left" width="500" height="500" scrolldelay="0" onmouseover="this.stop()" onmouseout="this.start()">
+<img src="image/A.jpg" width="500" height="500" />
+<img src="image/B.jpg" width="500" height="500" />
+<img src="image/C.jpg" width="500" height="500"/>
+</marquee></td></tr></table>
+</body>
+</html>

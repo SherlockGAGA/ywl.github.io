@@ -1,0 +1,267 @@
+
+<html>
+<title>守望先锋注册系统</title> 
+<head> 
+	<style type="text/css">
+	body {
+    background: #f8f8f8;
+    text-align: center;
+    color: #fff;
+	font-family:Microsoft YaHei,Segoe UI,Tahoma,Arial,Verdana,sans-serif;
+}
+
+
+td{
+	text-align:center;
+	}
+
+
+input {
+    width: 270px;
+    height: 42px;
+    margin-top: 25px;
+    padding: 0 15px;
+    background: #2d2d2d; /* browsers that don't support rgba */
+    background: rgba(45,45,45,.15);
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    border: 1px solid #3d3d3d; /* browsers that don't support rgba */
+    border: 1px solid rgba(255,255,255,.15);
+    -moz-box-shadow: 0 2px 3px 0 rgba(0,0,0,.1) inset;
+    -webkit-box-shadow: 0 2px 3px 0 rgba(0,0,0,.1) inset;
+    box-shadow: 0 2px 3px 0 rgba(0,0,0,.1) inset;
+    font-family: 'PT Sans', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color: #fff;
+    text-shadow: 0 1px 2px rgba(0,0,0,.1);
+    -o-transition: all .2s;
+    -moz-transition: all .2s;
+    -webkit-transition: all .2s;
+    -ms-transition: all .2s;
+}
+
+
+
+
+
+
+
+    </style>
+    <meta charset="utf-8" />
+  
+    
+    <script type="text/javascript">  //保存数据到本地
+    var  username, email; //全局变量
+	function count(){
+		var count
+	if(localStorage.getItem("count")==null)
+		count=1
+	else
+	    count=parseInt(localStorage.getItem("count"))+1;
+	if(count>1)
+        document.getElementById('mess').innerHTML = "您已是第" + (count-1)+"次访问本站点了。" + "您已经拒绝我们" + (count-1) + "次了，这个世界需要英雄！";
+      else
+        document.getElementById('mess').innerHTML = "欢迎您首次访问本站。这个世界需要英雄！";
+	localstorage.setItem("count",count);
+	
+	if(localStorage.getItem("username")==null);
+	else{	
+		username= localStorage.getItem("username");
+		document.getElementById('username').value=username;}
+	
+	if(localStorage.getItem("email")==null);
+	else{
+		email=localStorage.getItem("email");
+		document.getElementById('email').value=email;}
+	
+	}
+		window.onbeforeunload = function () {
+		username = document.getElementById('username').value;
+		email = document.getElementById('email').value;
+		if( username != undefined )
+				localStorage.setItem("username", username);
+		if( email != undefined )
+				localStorage.setItem("email", email);
+	}
+	window.addEventListener("load",count,true);
+																														
+	
+    //验证密码强度
+    function checkStrength()
+    {
+        var strength = document.getElementById("strength");
+        var psw1 = document.getElementById("psw1").value;
+        var length = psw1.length;
+        if (length>=1&&length<3)
+        {
+            strength.innerHTML="弱";
+        }
+        else if(length>=3&&length<6)
+        {
+            strength.innerHTML="中";
+        }
+        else
+        {
+            strength.innerHTML="强";
+        }
+    }
+    //验证两次输入密码是否一致
+    function checkPSW()
+    {
+        var psw1 = document.getElementById("psw1").value;
+        var psw2 = document.getElementById("psw2").value;
+        var pswInfo = document.getElementById("pswInfo");
+        if(psw1!=psw2)
+        {
+            pswInfo.innerHTML='两次输入的密码必须一致';
+        }
+    }
+    //注册方法	
+var db = openDatabase('contactdb','','local database demo',204800); 
+    function reg()
+    {	
+	
+        var username = document.getElementById("username").value;
+        var email = document.getElementById("email").value;
+        var gender = document.getElementById("gender").value;
+       
+        var address = document.getElementById("address").value;	
+		var password = document.getElementById("psw1").value;
+			var time = new Date().getTime();  
+		db.transaction(function(tx){  
+			tx.executeSql('insert into zhuce1 values(?,?,?,?,?,?)',[username,email,password,gender,address,time],onSuccess,onError);  
+		});  
+
+    }
+ 
+	//sql语句执行失败后执行的回调函数  
+
+		function loadAll(){    
+		db.transaction(function(tx){  
+			//如果数据表不存在，则创建数据表  
+			tx.executeSql('create table if not exists zhuce1(name text,email text,password int,gender text,address text,createtime INTEGER)',[]);  
+			//查询所有联系人记录  
+			 
+		});  
+	}  
+		function onSuccess(tx,rs){  
+		alert("操作成功");  
+		loadAll();  
+	} 
+		function onError(tx,error){  
+		alert("操作失败，失败信息："+ error.message);  
+	} 
+
+    </script>
+</head>
+<body style="text-align:center;" onLoad="loadAll()">
+<div class="wrap">
+		<!--//导航条 -->
+		<link href="style.css" media="screen" rel="stylesheet"/>
+	<nav>
+		<ul class="menu">
+			<li><a href="logo.html" >守望先锋</a></li>
+			<li><a href="#">游戏特色</a>
+				<ul>
+					<li><a href="3.html">电子竞技</a></li>
+                    <li><a href="qiehuan.html">地图</a></li>
+				</ul>
+			</li>
+			<li><a href="#">英雄</a>
+				<ul>
+					<li><a href="yingxiong.html">英雄介绍</a></li>
+					<li><a href="#">英雄分析</a></li>
+				</ul>
+			</li>
+			<li><a href="#">视频</a>
+				<ul>
+					<li><a href="video.html">视频介绍</a></li>
+					<li><a href="video2.html">精彩集锦</a></li>
+				</ul>
+			</li>
+			<li><a href="#">注册登录</a>
+				<ul>
+					<li><a href="zhuce.html">会员注册</a></li>
+                    <li><a href="denglu.html">会员登录</a></li>
+					<li><a href="2.html">挑选英雄</a></li>
+				</ul>
+			</li>
+			<li><a href="#">当前位置</a>
+				<ul>
+					<li><a href="#">地理定位</a></li>
+					<li><a href="#"></a></li>
+					<li><a href="#"></a></li>
+				</ul>
+			</li>
+			</ul>
+
+		<div class="clearfix"></div>
+	</nav>
+	</div>
+	<div id='mess'></div>
+    <div>
+    <form>
+    <fieldset>
+    
+    <center>
+    <div style="padding:5px;width=600px">
+        <h4>用户登录信息</h4>
+        <table width="100%">
+            <tr>
+                <td width='30%'>用户名</td>
+                <td width='40%'><input id="username" type="text" required/></td>
+                <td width='40%'><font color="red">*</font></td>
+            </tr>
+            <tr>
+                <td>邮箱</td>
+                <td><input id="email" type="email" required/></td>
+                <td><font color="red">*</font></td>
+            </tr>
+            <tr>
+                <td>密码</td>
+                <td><input id="psw1" type="password" required onKeyUp="checkStrength()"/></td>
+                <td><font color="red">*</font> <span id="strength"></span></td>
+            </tr>
+            <tr>
+                <td>确认密码</td>
+                <td><input id="psw2" type="password" required onBlur="checkPSW()"/></td>
+                <td><font color="red">*</font> <span id="pswInfo"></span></td>
+            </tr>
+       </table>
+    </div>
+    <div style="margin-top:10px;margin-bottom:20px">
+        <h3>用户基本信息</h3>
+        <table width='100%'>
+            <tr>
+                <td width='20%'>性别</td>
+                <td width='40%'>
+                    <select id="gender">
+                        <option value="男">男</option>
+                        <option value="女">女</option>
+                        <option value="其他">其他</option>
+                    </select>
+                </td>
+                <td width='20%'>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>出生年月</td>
+                <td><input id="birth" type="date" /></td>
+                <td>&nbsp;</td>
+            </tr>
+            <tr>
+                <td>住址</td>
+                <td><input id="address" type="text"/></td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+    </div>
+    <input type="submit" value="注册新用户" onClick="reg()">
+    <input type="reset" value="重置">
+    </center>
+    </fieldset>
+    </form>
+	</div>
+</body>
+
+</html>

@@ -1,0 +1,184 @@
+
+<html>
+<head>
+<title>选择喜欢的英雄</title> 
+<style type="text/css">
+body{background-image:url(image/D.jpg);
+background-size:cover; 
+}
+
+button {
+    width: 200px;
+    height: 42px;
+    margin-top: 25px;
+    padding: 0 15px;
+    background: #2d2d2d; /* browsers that don't support rgba */
+    background: rgba(45,45,45,.15);
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    border: 1px solid #3d3d3d; /* browsers that don't support rgba */
+    border: 1px solid rgba(255,255,255,.15);
+    -moz-box-shadow: 0 2px 3px 0 rgba(0,0,0,.1) inset;
+    -webkit-box-shadow: 0 2px 3px 0 rgba(0,0,0,.1) inset;
+    box-shadow: 0 2px 3px 0 rgba(0,0,0,.1) inset;
+    font-family: 'PT Sans', Helvetica, Arial, sans-serif;
+    font-size: 28px;
+    color: #FFF;
+    text-shadow: 0 1px 2px rgba(0,0,0,.1);
+    -o-transition: all .2s;
+    -moz-transition: all .2s;
+    -webkit-transition: all .2s;
+    -ms-transition: all .2s;
+}
+
+
+
+</style>
+<script>
+function dragIt(target, e) {
+    e.dataTransfer.setData('SpanImg', target.id);
+}
+function dropIt(target, e) {
+    var id = e.dataTransfer.getData('SpanImg');
+    target.appendChild(document.getElementById(id)); 
+    e.preventDefault();
+}
+function trashIt(target, e) {
+    var id = e.dataTransfer.getData('SpanImg');
+    removeElement(id);
+    e.preventDefault();
+}
+function removeElement(id)	{
+    var d_node = document.getElementById(id);
+    d_node.parentNode.removeChild(d_node);
+}
+
+
+	var speed=100; //设置滚动速度
+	demo2.innerHTML=demo1.innerHTML //复制dome1为dome2
+	function Marquee(){
+	if(demo2.offsetTop-demo.scrollTop<=0) //当滚动至dome1与dome2交界时
+	demo.scrollTop-=demo1.offsetHeight //dome跳到最顶端
+	else{
+	demo.scrollTop++
+	}
+	}
+	var MyMar=setInterval(Marquee,speed) //设置定时器
+	demo.onmouseover=function() {clearInterval(MyMar)}//鼠标移上时清除定时器达到滚动停止的目的
+	demo.onmouseout=function() {MyMar=setInterval(Marquee,speed)}//鼠标移开时重设定时器，继续滚
+	
+	function tishi(){
+		alert("操作成功")}
+</script>
+<script type="text/javascript">
+var cnt=document.getElementById('container');
+</script>
+</head>
+<body>
+	<div class="wrap">
+		<!--//导航条 -->
+		<link href="style.css" media="screen" rel="stylesheet"/>
+	<nav>
+		<ul class="menu">
+			<li><a href="logo.html" >守望先锋</a></li>
+			<li><a href="#">游戏特色</a>
+				<ul>
+					<li><a href="3.html">电子竞技</a></li>
+                    <li><a href="qiehuan.html">地图</a></li>
+				</ul>
+			</li>
+			<li><a href="#">英雄</a>
+				<ul>
+					<li><a href="yingxiong.html">英雄介绍</a></li>
+					<li><a href="#">英雄分析</a></li>
+				</ul>
+			</li>
+			<li><a href="#">视频</a>
+				<ul>
+					<li><a href="video.html">视频介绍</a></li>
+					<li><a href="video2.html">精彩集锦</a></li>
+				</ul>
+			</li>
+			<li><a href="#">注册登录</a>
+				<ul>
+					<li><a href="zhuce.html">会员注册</a></li>
+                    <li><a href="denglu.html">会员登录</a></li>
+					<li><a href="2.html">挑选英雄</a></li>
+				</ul>
+			</li>
+			<li><a href="#">当前位置</a>
+				<ul>
+					<li><a href="geolocation.html">地理定位</a></li>
+				</ul>
+			</li>
+			</ul>
+
+		<div class="clearfix"></div>
+	</nav>
+	</div>
+<center>
+
+<div width="100%" border="1" cellspacing=0 cellpadding=5>
+
+			<p style="font-size:50px">请选择喜欢的英雄放入召唤区域</p>
+
+
+	
+		<div id="container" align="center" id="customA" ondrop="dropIt(this, event)" ondragenter="return false" ondragover="return false">    
+
+
+
+			<span draggable="true" id="A" ondragstart="dragIt(this, event)">&nbsp;</span>
+		</div>
+
+	
+    	
+		    
+			
+		
+
+	
+</div>
+<br>
+<br>
+<table width="100%" border="0" cellspacing=0 cellpadding=5 >
+	<tr>
+		<td align="center">
+			<p style="font-size:50px">可选择的英雄</p>
+		</td>
+	</tr>
+	<tr>
+		<td  align="center" width="360" height="180" valign="bottom" align="left" id="holder" ondrop="dropIt(this, event)" ondragenter="return false" ondragover="return false">
+        <marquee behavior='scroll' scrollamount="5" loop="-1" direction="left" width="360" height="180" scrolldelay="0" onMouseOver="this.stop()" onMouseOut="this.start()">
+			<span draggable="true" id="1" ondragstart="dragIt(this, event)"><img src="image/1.jpg" style="width:180px;height:180px"></span>
+			<span draggable="true" id="2" ondragstart="dragIt(this, event)"><img src="image/2.jpg" style="width:180px;height:180px"></span>
+			<span draggable="true" id="3" ondragstart="dragIt(this, event)"><img src="image/3.jpg" style="width:180px;height:180px"></span>
+			<span draggable="true" id="4" ondragstart="dragIt(this, event)"><img src="image/4.jpg" style="width:180px;height:180px"></span> 
+			<span draggable="true" id="5" ondragstart="dragIt(this, event)"><img src="image/5.jpg" style="width:180px;height:180px"></span> 
+			<span draggable="true" id="6" ondragstart="dragIt(this, event)"><img src="image/6.jpg"  style="width:180px;height:180px"></span> 
+			<span draggable="true" id="7" ondragstart="dragIt(this, event)"><img src="image/7.jpg" style="width:180px;height:180px"></span> 
+			<span draggable="true" id="8" ondragstart="dragIt(this, event)"><img src="image/8.jpg"  style="width:180px;height:180px"></span> 
+			<span draggable="true" id="9" ondragstart="dragIt(this, event)"><img src="image/9.jpg" style="width:180px;height:180px"></span> 
+			<span draggable="true" id="10" ondragstart="dragIt(this, event)"><img src="image/10.jpg"  style="width:180px;height:180px"></span> 
+			<span draggable="true" id="11" ondragstart="dragIt(this, event)"><img src="image/11.jpg"  style="width:180px;height:180px"></span>  
+            <span draggable="true" id="11" ondragstart="dragIt(this, event)"><img src="image/12.jpg" style="width:180px;height:180px"></span>  
+            <span draggable="true" id="11" ondragstart="dragIt(this, event)"><img src="image/13.jpg" style="width:180px;height:180px"></span>  
+            <span draggable="true" id="11" ondragstart="dragIt(this, event)"><img src="image/14.jpg" style="width:180px;height:180px"></span>  
+            <span draggable="true" id="11" ondragstart="dragIt(this, event)"><img src="image/15.jpg" style="width:180px;height:180px"></span>  
+            <span draggable="true" id="11" ondragstart="dragIt(this, event)"><img src="image/16.png"  style="width:180px;height:180px"></span>  
+            <span draggable="true" id="11" ondragstart="dragIt(this, event)"><img src="image/17.jpg" style="width:180px;height:180px"></span>  
+            <span draggable="true" id="11" ondragstart="dragIt(this, event)"><img src="image/18.jpg" style="width:180px;height:180px"></span>  
+            <span draggable="true" id="11" ondragstart="dragIt(this, event)"><img src="image/19.jpg" style="width:180px;height:180px"></span>  
+            <span draggable="true" id="11" ondragstart="dragIt(this, event)"><img src="image/20.jpg" style="width:180px;height:180px"></span>  
+            <span draggable="true" id="11" ondragstart="dragIt(this, event)"><img src="image/21.jpg" style="width:180px;height:180px"></span>  
+            <span draggable="true" id="11" ondragstart="dragIt(this, event)"><img src="image/22.jpg" style="width:180px;height:180px"></span>  
+            </marquee>
+		</td>
+
+	</tr>
+    <tr><td align="center"><button type="submit" name="button" onClick="tishi()">提交</td></tr>
+</table>
+</center>
+</body>
+</html>

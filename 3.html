@@ -1,0 +1,281 @@
+
+<!DOCTYPE HTML>  
+<html>  
+<head>  
+    <meta charset="utf-8"/>  
+    <title>守望先锋战队系统</title>  
+    <style type="text/css">
+	body {
+    background: #f8f8f8;
+    text-align: center;
+    color: #fff;
+	font-family:Microsoft YaHei,Segoe UI,Tahoma,Arial,Verdana,sans-serif;
+}
+
+
+td{
+	text-align:center;
+	}
+
+
+input {
+    width: 270px;
+    height: 42px;
+    margin-top: 25px;
+    padding: 0 15px;
+    background: #2d2d2d; /* browsers that don't support rgba */
+    background: rgba(45,45,45,.15);
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    border-radius: 6px;
+    border: 1px solid #3d3d3d; /* browsers that don't support rgba */
+    border: 1px solid rgba(255,255,255,.15);
+    -moz-box-shadow: 0 2px 3px 0 rgba(0,0,0,.1) inset;
+    -webkit-box-shadow: 0 2px 3px 0 rgba(0,0,0,.1) inset;
+    box-shadow: 0 2px 3px 0 rgba(0,0,0,.1) inset;
+    font-family: 'PT Sans', Helvetica, Arial, sans-serif;
+    font-size: 14px;
+    color:#000;
+    text-shadow: 0 1px 2px rgba(0,0,0,.1);
+    -o-transition: all .2s;
+    -moz-transition: all .2s;
+    -webkit-transition: all .2s;
+    -ms-transition: all .2s;
+}
+
+
+
+
+
+
+
+    </style>
+    <script type="text/javascript">
+
+    //打开数据库  
+	var db = openDatabase('contactdb','','local database demo',204800);  
+	  
+	//保存数据  
+	function save(){  
+		var user_name = document.getElementById("user_name").value;  
+		var mobilephone = document.getElementById("mobilephone").value;  
+		var company = document.getElementById("company").value;  
+		//创建时间  
+		var time = new Date().getTime();  
+		db.transaction(function(tx){  
+			tx.executeSql('insert into contact values(?,?,?,?)',[user_name,mobilephone,company,time],onSuccess,onError);  
+		});  
+	}  
+	 //sql语句执行成功后执行的回调函数  
+	function onSuccess(tx,rs){  
+		alert("操作成功");  
+		loadAll();  
+	}  
+	//sql语句执行失败后执行的回调函数  
+	function onError(tx,error){  
+		alert("操作失败，失败信息："+ error.message);  
+	}  
+	//将所有存储在sqlLite数据库中的联系人全部取出来  
+	function loadAll(){  
+		var list = document.getElementById("list");  
+		db.transaction(function(tx){  
+			//如果数据表不存在，则创建数据表  
+			tx.executeSql('create table if not exists contact(name text,phone text,company text,createtime INTEGER)',[]);  
+			//查询所有联系人记录  
+			tx.executeSql('select * from contact',[],function(tx,rs){  
+			   if(rs.rows.length>0){  
+					var result = "<table>";  
+					result += "<tr><th>序号</th><th>战队名</th><th>人员数量</th><th>所属俱乐部</th><th>建队时间</th><th>操作</th></tr>";  
+					for(var i=0;i<rs.rows.length;i++){  
+						var row = rs.rows.item(i);  
+						//转换时间，并格式化输出  
+						var time = new Date();  
+						time.setTime(row.createtime);  
+						var timeStr = time.format("yyyy-MM-dd hh:mm:ss");  
+						//拼装一个表格的行节点  
+						result += "<tr><td>"+(i+1)+"</td><td>"+row.name+"</td><td>"+row.phone+"</td><td>"+row.company+"</td><td>"+timeStr+"</td><td><input type='button' value='删除' onclick='del("+row.phone+")'/></td></tr>";  
+					}  
+					list.innerHTML = result;  
+			   }else{  
+					list.innerHTML = "目前数据为空，赶紧开始加入联系人吧";  
+			   }   
+			});  
+		});  
+	}  
+	//删除联系人信息  
+	function del(phone){  
+		 db.transaction(function(tx){  
+			//注意这里需要显示的将传入的参数phone转变为字符串类型  
+			tx.executeSql('delete from contact where phone=?',[String(phone)],onSuccess,onError);  
+		});  
+	} 
+   //搜索  
+	function sear(){  
+		var list = document.getElementById("search");  
+		db.transaction(function(tx){  
+			//如果数据表不存在，则创建数据表  
+			tx.executeSql('create table if not exists contact(name text,phone text,company text,createtime INTEGER)',[]);  
+			//查询所有联系人记录 
+			var s = document.getElementById('sear').value;
+			s =  "select * from contact where name like '%" + s + "%'" 
+				+ "or phone like '%" + s + "%'" + 
+				"or company like '%" + s + "%'";
+			
+			tx.executeSql( s ,[],function(tx,rs){  
+			   if(rs.rows.length>0){  
+					var result = "<table>";  
+					result += "<tr><th>序号</th><th>战队名</th><th>人员数量</th><th>所属俱乐部</th><th>添加时间</th><th>操作</th></tr>";  
+					for(var i=0;i<rs.rows.length;i++){  
+						var row = rs.rows.item(i);  
+						//转换时间，并格式化输出  
+						var time = new Date();  
+						time.setTime(row.createtime);  
+						var timeStr = time.format("yyyy-MM-dd hh:mm:ss");  
+						//拼装一个表格的行节点  
+						result += "<tr><td>"+(i+1)+"</td><td>"+row.name+"</td><td>"+row.phone+"</td><td>"+row.company+"</td><td>"+timeStr+"</td><td><input type='button' value='删除' onclick='del("+row.phone+")'/></td></tr>";  
+					}  
+					list.innerHTML = result;  
+			   }else{  
+					list.innerHTML = "没有找到哦！";  
+			   }   
+			});  
+		});  
+	}  
+
+ 
+	//格式化时间的format函数
+	Date.prototype.format = function(format)  
+	{  
+		var o = {  
+		"M+" : this.getMonth()+1, //month  
+		"d+" : this.getDate(),    //day  
+		"h+" : this.getHours(),   //hour  
+		"m+" : this.getMinutes(), //minute  
+		"s+" : this.getSeconds(), //second  
+		"q+" : Math.floor((this.getMonth()+3)/3),  //quarter  
+		"S" : this.getMilliseconds() //millisecond  
+		}  
+		if(/(y+)/.test(format)) format=format.replace(RegExp.$1,  
+		(this.getFullYear()+"").substr(4 - RegExp.$1.length));  
+		for(var k in o)if(new RegExp("("+ k +")").test(format))  
+		format = format.replace(RegExp.$1,  
+		RegExp.$1.length==1 ? o[k] :  
+		("00"+ o[k]).substr((""+ o[k]).length));  
+		return format;  
+	}  
+    </script>
+    <style>  
+		body, html{
+		}
+		#container{
+			position: relative;
+			margin: 30px auto 30px auto;
+			padding:0px;
+			width:700px;
+			text-align:center;
+		}
+        #addDiv{
+			padding:10px;
+			margin:10px; 
+            border: 2px dashed #ccc;  
+            width:90%;  
+            text-align:left;
+        }  
+        th {  
+			font: bold 11px "Trebuchet MS", Verdana, Arial, Helvetica, sans-serif;  
+			color: #4f6b72;  
+			border-right: 1px solid #C1DAD7;  
+			border-bottom: 1px solid #C1DAD7;  
+			border-top: 1px solid #C1DAD7;  
+			letter-spacing: 2px;  
+			text-transform: uppercase;  
+			text-align: left;  
+			padding: 6px 6px 6px 12px;  
+		}  
+		td {  
+			border-right: 1px solid #C9DAD7;  
+			border-bottom: 1px solid #C9DAD7;  
+			background: #fff;  
+			padding: 6px 6px 6px 12px;  
+			color: #4f6b72;  
+		}  
+    </style>  
+</head>  
+<body onload="loadAll()">  
+	<div class="wrap">
+		<!--//导航条 -->
+		<link href="style.css" media="screen" rel="stylesheet"/>
+	<nav>
+		<ul class="menu">
+			<li><a href="logo.html" >守望先锋</a></li>
+			<li><a href="#">游戏特色</a>
+				<ul>
+					<li><a href="#">电子竞技</a></li>
+                    <li><a href="qiehuan.html">地图</a></li>
+				</ul>
+			</li>
+			<li><a href="#">英雄</a>
+				<ul>
+					<li><a href="yingxiong.html">英雄介绍</a></li>
+					<li><a href="#">英雄分析</a></li>
+				</ul>
+			</li>
+			<li><a href="#">视频</a>
+				<ul>
+					<li><a href="video.html">视频介绍</a></li>
+					<li><a href="video2.html">精彩集锦</a></li>
+				</ul>
+			</li>
+			<li><a href="#">注册登录</a>
+				<ul>
+					<li><a href="zhuce.html">会员注册</a></li>
+                    <li><a href="denglu.html">会员登录</a></li>
+					<li><a href="2.html">挑选英雄</a></li>
+				</ul>
+			</li>
+			<li><a href="#">当前位置</a>
+				<ul>
+					<li><a href="geolocation.html">地理定位</a></li>
+				</ul>
+			</li>
+			</ul>
+
+		<div class="clearfix"></div>
+	</nav>
+	</div>
+<div id="container">
+
+	<header>守望战队</header>
+    
+    <div id="addDiv">     
+        <label for="user_name">战队名：</label>  
+        <input type="text" id="user_name" name="user_name" size="20" placeholder="战队名" />  
+        <br/>  
+        <label for="mobilephone">人员数量：</label>  
+        <input type="tel" id="mobilephone" name="mobilephone" size="20" placeholder="人员数量"/>  
+        <br/> 
+        <label for="mobilephone">所属俱乐部：</label>  
+        <input type="text" id="company" name="company" size="50" placeholder="所属俱乐部" />  
+        <br/>  <blockquote />        
+        <input type="button" onclick="save()" value="新增战队"/>  
+    </div>  
+    
+    <br/>  
+    <div id="list">  
+    </div>  
+    
+    <br/>  
+    <div>  
+        <label for="user_name">关键字</label>  
+        <input type="text" id="sear" name="sear_name" placeholder="请输入要查询的内容"/>  
+        <input type="button" onclick="sear()" value="搜索"/>  
+        <br/>  
+    </div>
+      
+    <br/>  
+    <div id="search">  
+    </div>    
+    
+</div> 
+</body>  
+</html> 
